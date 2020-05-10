@@ -53,12 +53,12 @@ def loss_mse(mean=True):
         def my_error(y_true, y_pred):
             power = 3/2
             n = K.shape(y_true)[-1]
-            return K.square(R(K.pow(y_true, power) - K.pow(y_pred[...,:n], power)))
+            return K.abs(R(K.pow(y_true, power) - K.pow(y_pred[...,:n], power)))
         return my_error
     else:
         def my_error(y_true, y_pred):
             n = K.shape(y_true)[1]
-            return K.square(R(K.pow(y_true, power) - K.pow(y_pred[:,:n,...], power)))
+            return K.abs(R(K.pow(y_true, power) - K.pow(y_pred[:,:n,...], power)))
         return my_error
 
 
