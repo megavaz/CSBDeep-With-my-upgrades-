@@ -50,15 +50,16 @@ def loss_mae(mean=True):
 def loss_mse(mean=True):
     R = _mean_or_not(mean)
     if backend_channels_last():
-        def mae(y_true, y_pred):
+        def my_error(y_true, y_pred):
+            power = 3/2
             n = K.shape(y_true)[-1]
-            return R(K.abs(y_pred[...,:n] - y_true))
-        return mae
+            return K.square(R(K.pow(y_true, power) - K.pow(y_pred[...,:n], power)))
+        return my_error
     else:
-        def mae(y_true, y_pred):
+        def my_error(y_true, y_pred):
             n = K.shape(y_true)[1]
-            return R(K.abs(y_pred[:,:n,...] - y_true))
-        return mae
+            return K.square(R(K.pow(y_true, power) - K.pow(y_pred[:,:n,...], power)))
+        return my_error
 
 
 def loss_thresh_weighted_decay(loss_per_pixel, thresh, w1, w2, alpha):
