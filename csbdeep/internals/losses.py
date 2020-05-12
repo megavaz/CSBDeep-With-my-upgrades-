@@ -51,7 +51,7 @@ def loss_mse(mean=True):
     R = _mean_or_not(mean)
     if backend_channels_last():
         def my_error(y_true, y_pred):
-            power = 2
+            power = 3
             n = K.shape(y_true)[-1]
             return K.abs(R(K.pow(y_true, power) - K.pow(y_pred[...,:n], power)))
         return my_error
